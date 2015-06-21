@@ -15,18 +15,20 @@ class FireGestureRecognizer: UIGestureRecognizer {
     var distanceThreshold = 5.0
     private var startTimes = NSMutableDictionary()
     
-    override func touchesBegan(touches: NSSet!, withEvent event: UIEvent!) {
-        
+    override func touchesBegan(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         //record the start times of each touch
-        for touch in touches {
+        if let touch = touches.first as? UITouch {
+            // ...
+        //}
+        //for touch in touches {
             startTimes[touch.hash] = touch.timestamp
         }
     }
     
-    override func touchesMoved(touches: NSSet!, withEvent event: UIEvent!) {
-        
+    override func touchesMoved(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         //discard any touches that have moved
-        for touch in touches {
+        //for touch in touches {
+        if let touch = touches.first as? UITouch {
             
             let newPos = touch.locationInView(view)
             let oldPos = touch.previousLocationInView(view)
@@ -37,11 +39,12 @@ class FireGestureRecognizer: UIGestureRecognizer {
         }
     }
     
-    override func touchesEnded(touches: NSSet!, withEvent event: UIEvent!) {
-        
-        for touch in touches {
-            
-            let startTime = startTimes[touch.hash] as NSTimeInterval?
+    override func touchesEnded(touches: Set<NSObject>!, withEvent event: UIEvent!) {
+
+        //for touch in touches {
+        if let touch = touches.first as? UITouch {
+                
+            let startTime = startTimes[touch.hash] as! NSTimeInterval?
             if let startTime = startTime {
                 
                 //check if within time
@@ -56,8 +59,7 @@ class FireGestureRecognizer: UIGestureRecognizer {
         reset()
     }
     
-    override func touchesCancelled(touches: NSSet!, withEvent event: UIEvent!) {
-        
+    override func touchesCancelled(touches: Set<NSObject>!, withEvent event: UIEvent!) {
         reset()
     }
     
